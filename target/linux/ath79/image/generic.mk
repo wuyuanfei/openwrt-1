@@ -92,6 +92,7 @@ define Device/avm_fritz4020
       append-squashfs-fakeroot-be | pad-to 256 | \
       append-rootfs | pad-rootfs | append-metadata | check-size $$$$(IMAGE_SIZE)
   DEVICE_PACKAGES := fritz-tffs
+  SUPPORTED_DEVICES += fritz4020
 endef
 TARGET_DEVICES += avm_fritz4020
 
@@ -161,6 +162,14 @@ define Device/comfast_cf-e110n-v2
   IMAGE_SIZE := 16192k
 endef
 TARGET_DEVICES += comfast_cf-e110n-v2
+
+define Device/comfast_cf-e120a-v3
+  ATH_SOC := ar9344
+  DEVICE_TITLE := COMFAST CF-E120A v3
+  DEVICE_PACKAGES := rssileds kmod-leds-gpio -uboot-envtools
+  IMAGE_SIZE := 8000k
+endef
+TARGET_DEVICES += comfast_cf-e120a-v3
 
 define Device/devolo_dvl1200e
   ATH_SOC := qca9558
@@ -348,6 +357,18 @@ define Device/iodata_wn-ac1167dgr
   DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-ath10k-ct ath10k-firmware-qca988x-ct
 endef
 TARGET_DEVICES += iodata_wn-ac1167dgr
+
+define Device/iodata_wn-ac1600dgr
+  ATH_SOC := qca9557
+  DEVICE_TITLE := I-O DATA WN-AC1600DGR
+  IMAGE_SIZE := 14656k
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-kernel | pad-to $$$$(BLOCKSIZE) | \
+    append-rootfs | pad-rootfs | check-size $$$$(IMAGE_SIZE) | \
+    senao-header -r 0x30a -p 0x60 -t 2 -v 200
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-ath10k-ct ath10k-firmware-qca988x-ct
+endef
+TARGET_DEVICES += iodata_wn-ac1600dgr
 
 define Device/iodata_wn-ac1600dgr2
   ATH_SOC := qca9557
